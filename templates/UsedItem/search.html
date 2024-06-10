@@ -35,8 +35,15 @@
         {#        {% if 당근 %}#}
                 <div class="contents">
         {#                당근#}
-                    <div class="img_wrapper">
-                        <img class="logo" src="{% static 'images/danggeun_logo.png' %}" alt="Danggeun Market Logo">
+                    <div class="logo_wrapper">
+                        <div class="img_wrapper">
+                            <img class="logo" src="{% static 'images/danggeun_logo.png' %}" alt="Danggeun Market Logo">
+                        </div>
+                        {% if mode == 'search' %}
+                        <button class="more_items" onclick="openWindow('https://www.daangn.com/search/')">더보기
+                            <i class="fa-solid fa-arrow-right" style="margin: 0 0 0 5px"></i>
+                        </button>
+                        {% endif %}
                     </div>
                     <div class="container">
                         <div class="item_wrapper" id="danggeun">
@@ -48,8 +55,15 @@
         {#        {% if 번장 %}#}
                 <div class="contents">
         {#                번장#}
-                    <div class="img_wrapper">
-                        <img class="logo" src="{% static 'images/bunjang_logo.png' %}" alt="Bunjang Logo">
+                    <div class="logo_wrapper">
+                        <div class="img_wrapper">
+                            <img class="logo" src="{% static 'images/bunjang_logo.png' %}" alt="Bunjang Logo">
+                        </div>
+                        {% if mode == 'search' %}
+                        <button class="more_items" onclick="openWindow('https://m.bunjang.co.kr/search/products?order=score&page=1&q=')">더보기
+                            <i class="fa-solid fa-arrow-right" style="margin: 0 0 0 5px"></i>
+                        </button>
+                        {% endif %}
                     </div>
                     <div class="container">
                         <div class="item_wrapper" id="bunjang">
@@ -61,8 +75,15 @@
         {#        {% if 중고나라 %}#}
                 <div class="contents">
         {#                중고나라#}
-                    <div class="img_wrapper">
-                        <img class="logo" src="{% static 'images/joongna_logo.png' %}" alt="Joonggo Nara Logo">
+                    <div class="logo_wrapper">
+                        <div class="img_wrapper">
+                            <img class="logo" src="{% static 'images/joongna_logo.png' %}" alt="Joonggo Nara Logo">
+                        </div>
+                        {% if mode == 'search' %}
+                        <button class="more_items" onclick="openWindow('https://web.joongna.com/search/')">더보기
+                            <i class="fa-solid fa-arrow-right" style="margin: 0 0 0 5px"></i>
+                        </button>
+                        {% endif %}
                     </div>
                     <div class="container">
                         <div class="item_wrapper" id="joongna">
@@ -159,6 +180,11 @@
             renderItems(dangRslt, 'danggeun')
             renderItems(joongRslt, 'joongna')
         }
+        
+        // 더보기 버튼 처리
+        function openWindow(url) {
+            window.open(url+'{{ keyword|escapejs }}', '_blank');
+        }
 
         // search 일때만 검색 수행 및 아이템 출력
         // base 일때는 homepage 메인처럼 보이게
@@ -182,6 +208,7 @@
             renderItems(bunjang, 'bunjang')
             renderItems(danggeun, 'danggeun')
             renderItems(joongna, 'joongna')
+            $("#kw_input").val('{{ keyword|escapejs }}');
         }
 
     </script>

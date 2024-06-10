@@ -68,6 +68,26 @@
 }
 
 
+.logo_wrapper {
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+    margin: 0 10px;
+    align-items: center;
+}
+
+.more_items {
+    padding: 0;
+    height: 30px;
+    border: none;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    color: coral;
+    margin: 0 20px;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .logo {
     height: 50px;
     margin-right: 10px;

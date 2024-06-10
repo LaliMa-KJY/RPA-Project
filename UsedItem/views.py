@@ -27,6 +27,7 @@ def search(request):
     # @TODO 당근, 중고나라 넣기
     context = {
         'mode': 'search',
+        'keyword': keyword,
         'items': json.dumps(items),
         'bunjang': json.dumps(bunjang),
         # 'danggeun': json.dumps(danggeun),
