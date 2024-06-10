@@ -24,11 +24,11 @@
         <div>
             <div class="option">
                 <!-- <span>기본 | 낮은금액순 | 높은금액순</span> -->
-                <button class="filter_btn" onclick="sortProducts('basic')">기본순</button>
+                <button class="filter_btn" onclick="sortItems('basic')">기본순</button>
                 <hr class="filter_bar">
-                <button class="filter_btn" onclick="sortProducts('low_price')">낮은금액순</button>
+                <button class="filter_btn" onclick="sortItems('low')">낮은금액순</button>
                 <hr class="filter_bar">
-                <button class="filter_btn" onclick="sortProducts('high_price')">높은금액순</button>
+                <button class="filter_btn" onclick="sortItems('high')">높은금액순</button>
             </div>
             <div class="contents_wrapper">
 
@@ -82,7 +82,12 @@
 
     {% block script %}
     <script type="text/javascript">
-        
+        let bunjang;
+        let danggeun;
+        let joongna;
+        let originBunjang;
+        let originDanggeun;
+        let originJoongna;
         
         // items 를 html로 렌더링
         function renderItems(items, flatform){
@@ -94,19 +99,17 @@
                 const itemDiv = document.createElement('div')
                 itemDiv.classList.add('item')
                 itemDiv.innerHTML = `
-                <div class="item_img_wrapper">
+                        <div class="item_img_wrapper">
                             <img src="${i.img_url}" alt="${i.title}"/>
                         </div>
                         <div class="detail">
                             <div class="title">${i.title}</div>
                             <div class="price">${i.price}</div>
                             <div class="address">${i.location}</div>
-                            </div>
+                        </div>
                             `
-                            // 클릭이벤트
-                            itemDiv.addEventListener('click', () => {
-                                console.log('click!');
-                    console.log(i.url);
+                // 클릭이벤트
+                itemDiv.addEventListener('click', () => {
                     window.open(i.url, '_blank');
                 });
                 
@@ -128,19 +131,53 @@
             }
         })
 
+        // item 필터링 (정렬)
+        function sortItems(type){       // basic: 기본, low: 낮은 금액순, high: 높은 금액순
+            let bunRslt;
+            let dangRslt;
+            let joongRslt;
+            
+            if(type === 'basic') {  // 기본 정렬
+                bunRslt = [...originBunjang]
+                dangRslt = [...originDanggeun]
+                joongRslt = [...originJoongna]
+            } else {
+                bunRslt = [...bunjang]
+                dangRslt = [...danggeun]
+                joongRslt = [...joongna]
+                if(type === 'low'){             // 낮음 금액순(오름차순)
+                    bunRslt.sort((a, b) => parseFloat(a.price.replace(',', '').replace('원', '')) - parseFloat(b.price.replace(',', '').replace('원', '')));
+                    dangRslt.sort((a, b) => parseFloat(a.price.replace(',', '').replace('원', '')) - parseFloat(b.price.replace(',', '').replace('원', '')));
+                    joongRslt.sort((a, b) => parseFloat(a.price.replace(',', '').replace('원', '')) - parseFloat(b.price.replace(',', '').replace('원', '')));
+                } else if(type === 'high'){     // 높은 금액순(내림차순)
+                    bunRslt.sort((a, b) => parseFloat(b.price.replace(',', '').replace('원', '')) - parseFloat(a.price.replace(',', '').replace('원', '')));
+                    dangRslt.sort((a, b) => parseFloat(b.price.replace(',', '').replace('원', '')) - parseFloat(a.price.replace(',', '').replace('원', '')));
+                    joongRslt.sort((a, b) => parseFloat(b.price.replace(',', '').replace('원', '')) - parseFloat(a.price.replace(',', '').replace('원', '')));
+                }
+            }
+            renderItems(bunRslt, 'bunjang')
+            renderItems(dangRslt, 'danggeun')
+            renderItems(joongRslt, 'joongna')
+        }
+
         // search 일때만 검색 수행 및 아이템 출력
-        // base 일때는 그냥 homepage 메인처럼 보이게
-        console.log('{{ mode|escapejs }}')
+        // base 일때는 homepage 메인처럼 보이게
         if('{{ mode|escapejs }}' == 'search'){
             // 서버에서 전달된 items 를 변수에 담기
             const items = JSON.parse('{{ items|escapejs }}')
-            const bunjang = JSON.parse('{{ bunjang|escapejs }}')
-            const danggeun = JSON.parse('{{ bunjang|escapejs }}')
-            const joongna = JSON.parse('{{ bunjang|escapejs }}')
+            bunjang = JSON.parse('{{ bunjang|escapejs }}')
+            // @TODO parse 내용 바꾸기
+            danggeun = JSON.parse('{{ bunjang|escapejs }}')
+            joongna = JSON.parse('{{ bunjang|escapejs }}')
             // const danggeun = JSON.parse('{{ danggeun|escapejs }}')
             // const joongna = JSON.parse('{{ joongna|escapejs }}')
-            console.log(items)
+
             
+            // 정렬 시 '기본' 정렬에 필요한 기존 데이터 따로 변수에 저장
+            originBunjang = JSON.parse('{{ bunjang|escapejs }}')
+            originDanggeun = JSON.parse('{{ bunjang|escapejs }}')
+            originJoongna = JSON.parse('{{ bunjang|escapejs }}')
+
             // 페이지 로드시 아이템 리스트 렌더링
             renderItems(bunjang, 'bunjang')
             renderItems(danggeun, 'danggeun')

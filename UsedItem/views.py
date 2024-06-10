@@ -17,12 +17,14 @@ def search(request):
         return render(request, 'UsedItem/search.html', context=context)
     
     bunjang = get_bunjang_products(keyword)
+    # @TODO 당근, 중고나라 넣기
     # danggeun = get_dangn_products(keyword)
     # joongna = get_joongna_products(keyword)
     # items = {'bunjang': bunjang, 'danggeun':danggeun, 'joongna':joongna}
     items = {'bunjang': bunjang}
 
 
+    # @TODO 당근, 중고나라 넣기
     context = {
         'mode': 'search',
         'items': json.dumps(items),
