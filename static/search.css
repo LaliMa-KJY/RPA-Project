@@ -30,9 +30,29 @@
 }
 
 .option {
+    display: flex;
     text-align: end;
     margin: 15px 50px;
     width: 1400px;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.filter_btn {
+    border: none;
+    margin: 1px 10px;
+    background-color: #FFFFFF;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.filter_bar {
+    width: 2px;
+    height: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: #000000;
+    border: none;
 }
 
 .contents_wrapper {

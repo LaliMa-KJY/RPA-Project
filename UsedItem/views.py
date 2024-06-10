@@ -11,13 +11,11 @@ def search(request):
     keyword = request.GET.get('kw', '')
     print(keyword)
     if (keyword == ''):
-        print('여기 지나가야대')
         context = {
             'mode': 'basic'
         }
         return render(request, 'UsedItem/search.html', context=context)
     
-    print('여기 지나가면 안돼..제발..')
     bunjang = get_bunjang_products(keyword)
     # danggeun = get_dangn_products(keyword)
     # joongna = get_joongna_products(keyword)
