@@ -1,0 +1,146 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>코스피 기업정보</title>
+  <mt="utf-8">eta charse
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.83.1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+ 
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/dashboard/">
+  
+    <!-- Bootstrap core CSS -->
+    <link href="/docs/5.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+ 
+    <!-- 해당 부분이 빠지면 페이징 동작 안함-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  
+    <!-- Favicon -->
+    <meta name="theme-color" content="#7952b3">
+ 
+    <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          user-select: none;
+        }
+   
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+
+        /* CSS 스타일을 사용하여 이미지를 예쁘게 보여주기 */
+        .image-container {
+            height: 200px; /* 화면의 높이에 맞추기 */
+            background-color: #f0f0f0; /* 배경색을 설정하여 대비를 줌 */
+        }
+        .image-container img {
+            max-width: 200px;
+            max-height: 200px; /* 화면 높이의 80%로 제한 */
+            width: auto;
+            height: auto;
+            border: 1px solid #ddd; /* 테두리를 추가하여 깔끔하게 보이게 */
+            border-radius: 10px; /* 모서리를 둥글게 */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 그림자 효과 추가 */
+        }
+    </style>
+ 
+</head>
+<body>
+    <div>
+        힛힛 crawling
+    </div>
+    <div class="row justify-content-end my-3">
+        <div class="col-4 input-group">
+            <input type="text" class="form-control kw" value="{{ kw|default_if_none:'' }}">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="btn_search">찾기</button>
+            </div>
+        </div>
+    </div>
+    <div class="sort-buttons">
+        <button onclick="sortProducts('title')">Sort by Title</button>
+        <button onclick="sortProducts('price')">Sort by Price</button>
+        <button onclick="sortProducts('location')">Sort by Location</button>
+    </div>
+    <div id="product-list" class="product-list">
+        <!-- 제품 리스트는 JavaScript로 추가됩니다. -->
+    </div>
+    <hr/>
+    <br/>
+    <!-- {% if items != null %}
+    <div>
+        {% for i in items %}
+        <div>{{i.flatform}}</div>
+        <div>{{i.title}}</div>
+        <div>{{i.url}}</div>
+        <div>{{i.location}}</div>
+        <div>{{i.price}}</div>
+        <div class="image-container">
+            <img src="{{ i.img_url }}" alt="{{ i.title }}">
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %} -->
+
+    <form id="searchForm" method="get" action="{% url 'myTest' %}">
+        <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}"/>
+    </form>
+
+    {% block script %}
+    <script type='text/javascript'>
+        // 서버에서 전달된 제품 데이터를 JavaScript 변수에 저장
+        const products = JSON.parse('{{ items|escapejs }}');
+        console.log(products)
+        $(document).ready(function(){
+        })
+
+        // 제품 리스트를 HTML로 렌더링하는 함수
+        function renderProducts(products) {
+            const productList = document.getElementById('product-list');
+            productList.innerHTML = '';
+            products.forEach(item => {
+                const productItem = document.createElement('div');
+                productItem.classList.add('product-item');
+                productItem.innerHTML = `
+                    <img src="${item.img_url}" alt="${item.title}">
+                    <div class="product-info">
+                        <h3>${item.title}</h3>
+                        <p class="platform">${item.flatform}</p>
+                        <p>${item.price}</p>
+                        <p>${item.location}</p>
+                    </div>
+                `;
+                productList.appendChild(productItem);
+            });
+        }
+
+        // 초기 제품 리스트 렌더링
+        renderProducts(products);
+
+        // 제품을 정렬하는 함수
+        function sortProducts(criteria) {
+            const sortedProducts = [...products];
+            if (criteria === 'price') {
+                sortedProducts.sort((a, b) => parseFloat(a.price.replace(',', '').replace('원', '')) - parseFloat(b.price.replace(',', '').replace('원', '')));
+            } else if (criteria === 'title') {
+                sortedProducts.sort((a, b) => a.title.localeCompare(b.title));
+            } else if (criteria === 'location') {
+                sortedProducts.sort((a, b) => a.location.localeCompare(b.location));
+            }
+            renderProducts(sortedProducts);
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>
