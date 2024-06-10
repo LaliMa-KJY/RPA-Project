@@ -1,7 +1,15 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .crawling import get_all_products, get_joongna_products, get_dangn_products, get_bunjang_products
+from .kakaoMSG import sendMSG as sendMsg
 
 import json
+
+import requests
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.conf import settings
 
 
 
@@ -37,14 +45,26 @@ def search(request):
 
 
 
+# # csrf 검사 무시
+# @csrf_exempt
+# def kakaoMSG(request):
+#     if request.method == 'POST':
+#         print('kakaoMSG')
 
-def kakaoMSG(request):
-    print('kakaoMSG')
-    return render(request, 'UsedItem/myTest.html')
+#         ######################################################
+#         sendMsg()
+#         ######################################################
 
+#         return JsonResponse({'message':'success'})
+#     return JsonResponse({'error':'fail'})
+
+# csrf 검사 무시
+@csrf_exempt
 def excelSave(request):
-    print('excelSave')
-    return render(request, 'UsedItem/myTest.html')
+    if request.method == 'POST':
+        print('excelSave')
+        return JsonResponse({'message':'success'})
+    return JsonResponse({'error':'fail'})
 
 def myTest(request):
     print('myTest')
@@ -65,3 +85,44 @@ def myTest(request):
         'items': json.dumps(items)
     }
     return render(request, 'UsedItem/myTest.html', context=context)
+
+
+
+
+
+def kakao_login(request):
+    print('로그인')
+    client_id = settings.KAKAO_CLIENT_ID
+    redirect_uri = 'http://127.0.0.1:8000/oauth'
+    return redirect(f"https://kauth.kakao.com/oauth/authorize?response_type=code&client_id={client_id}&redirect_uri={redirect_uri}")
+
+def kakao_callback(request):
+    print('콜백')
+    code = request.GET.get('code')
+    print(f'받은 코드: {code}')
+    client_id = settings.KAKAO_CLIENT_ID
+    redirect_uri = 'http://127.0.0.1:8000/oauth'
+    token_url = 'https://kauth.kakao.com/oauth/token'
+    
+    data = {
+        'grant_type': 'authorization_code',
+        'client_id': client_id,
+        'redirect_uri': redirect_uri,
+        'code': code,
+    }
+    
+    response = requests.post(token_url, data=data)
+    token_json = response.json()
+    sendMsg(token_json)
+    # access_token = token_json.get('access_token')
+    
+    # # Use the access token to get user information
+    # user_info_url = 'https://kapi.kakao.com/v2/user/me'
+    # headers = {
+    #     'Authorization': f'Bearer {access_token}',
+    # }
+    
+    # user_info_response = requests.get(user_info_url, headers=headers)
+    # user_info = user_info_response.json()
+    print('야 왜 리턴안해')
+    return render(request, 'UsedItem/kakaoSuccess.html')

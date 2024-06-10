@@ -1,1 +1,2 @@
-config/settings.py
+
+.config_secret/settings_debug.json

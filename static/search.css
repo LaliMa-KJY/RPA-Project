@@ -64,7 +64,6 @@
 
 .contents {
     width: 500px;
-    border-bottom: solid 3px lightgray;
 }
 
 
@@ -164,4 +163,36 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+}
+
+.kakao_share {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #ffd843;
+    color: #533600;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center
+}
+
+.excel_save {
+    position: fixed;
+    bottom: 20px;
+    right: 220px;
+    background-color: #7fcd6d;
+    color: #fff6f6;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
 }

@@ -4,7 +4,11 @@ from . import views
 
 urlpatterns = [
     path('', views.search, name='search'),
-    path('kakaoMSG/', views.kakaoMSG, name='kakaoMSG'),
     path('excelSave/', views.excelSave, name='excelSave'),
     path('myTest/', views.myTest, name='myTest'),
+
+
+
+    path('kakao/login/', views.kakao_login, name='kakao_login'),
+    path('oauth/', views.kakao_callback, name='kakao_callback'),
 ]

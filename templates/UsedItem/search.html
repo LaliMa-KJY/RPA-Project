@@ -45,11 +45,13 @@
                         </button>
                         {% endif %}
                     </div>
+                    {% if mode == 'search' %}
                     <div class="container">
                         <div class="item_wrapper" id="danggeun">
                             <!-- item 리스트 영역 :: js로 채움 -->
                         </div>
                     </div>
+                    {% endif %}
                 </div>
         {#        {% endif %}#}
         {#        {% if 번장 %}#}
@@ -65,14 +67,15 @@
                         </button>
                         {% endif %}
                     </div>
+                    {% if mode == 'search' %}
                     <div class="container">
                         <div class="item_wrapper" id="bunjang">
                             <!-- item 리스트 영역 :: js로 채움 -->
                         </div>
                     </div>
+                    {% endif %}
                 </div>
-        {#        {% endif %}#}
-        {#        {% if 중고나라 %}#}
+
                 <div class="contents">
         {#                중고나라#}
                     <div class="logo_wrapper">
@@ -85,18 +88,30 @@
                         </button>
                         {% endif %}
                     </div>
+                    {% if mode == 'search' %}
                     <div class="container">
                         <div class="item_wrapper" id="joongna">
                             <!-- item 리스트 영역 :: js로 채움 -->
                         </div>
                     </div>
+                    {% endif %}
                 </div>
-        {#        {% endif %}#}
             </div>
             </div>
 
     </div>
-
+    <div>
+        <button class="kakao_share" onclick="shareKakao()">
+            <img width="30" height="30" src="https://img.icons8.com/color/48/000000/kakaotalk.png" alt="kakaotalk"
+            style="margin: 0 5px 0 0;">
+            나에게 공유하기
+        </button>
+        <button class="excel_save" onclick="saveExcel()">
+            <img width="30" height="30" src="https://img.icons8.com/fluency/30/microsoft-excel-2019.png" alt="microsoft-excel-2019"
+            style="margin: 0 5px 0 0;">
+            저장하기
+        </button>
+    </div>
     <form id="searchForm" method="get" action="{% url 'search' %}">
         <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}"/>
     </form>
@@ -184,6 +199,35 @@
         // 더보기 버튼 처리
         function openWindow(url) {
             window.open(url+'{{ keyword|escapejs }}', '_blank');
+        }
+
+
+        // 나에게 공유하기
+        function shareKakao(){
+            console.log('나에게 공유하기 !')
+            window.open('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=b6f734ae84ffdf355f8f4abb96aa88f0&redirect_uri=http://127.0.0.1:8000/oauth', '_blank')
+            // fetch('/kakaoMSG/', { method: 'POST'})
+            //     .then(res => {
+            //         console.log(res)
+            //         console.log('성공')
+            //     })
+            //     .catch(e => {
+            //         console.log(e)
+            //         console.log('실패')
+            //     })
+        }
+
+        function saveExcel(){
+            console.log('엑셀로 저장하기')
+            fetch('/excelSave/', { method: 'POST'})
+                .then(res => {
+                    console.log(res)
+                    console.log('성공')
+                })
+                .catch(e => {
+                    console.log(e)
+                    console.log('실패')
+                })
         }
 
         // search 일때만 검색 수행 및 아이템 출력
