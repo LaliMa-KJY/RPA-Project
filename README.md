@@ -28,11 +28,11 @@
 
 1. VSCode - New Window
     
-    ![Untitled](readme-images/Untitled.png)
+    ![Untitled](README-images/Untitled.png)
     
 2. Clone Git Repository 클릭
     
-    ![Untitled](readme-images/Untitled%201.png)
+    ![Untitled](README-images/Untitled%201.png)
     
 3. Repository url 입력
     
@@ -42,13 +42,13 @@
     
 4. 아래 파일 생성
     
-    ![Untitled](readme-images/Untitled%202.png)
+    ![Untitled](README-images/Untitled%202.png)
     
     > 파일 내용은 따로 드립니다.
     > 
 5. Terminal 새로 열고 아래 명령 입력
     
-    ![Untitled](readme-images/Untitled%203.png)
+    ![Untitled](README-images/Untitled%203.png)
     
     ```bash
     python manage.py runserver
