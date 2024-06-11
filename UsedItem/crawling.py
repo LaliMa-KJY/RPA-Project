@@ -5,7 +5,10 @@ from selenium.webdriver.support.ui import WebDriverWait
 from bs4 import BeautifulSoup
 import requests
 
+from . import DBController
+
 session = requests.Session()
+dbController = DBController.DBController()
 
 def get_bunjang_products(itemname, max_results=10):
     browser = webdriver.Chrome()
@@ -53,6 +56,8 @@ def get_bunjang_products(itemname, max_results=10):
             print("error!!", e)
 
     browser.quit()
+    dbController.saveItems(products)
+
     return products
 
 

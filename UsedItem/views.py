@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .crawling import get_all_products, get_joongna_products, get_dangn_products, get_bunjang_products
 from .kakaoMSG import sendMSG as sendMsg
+from . import DBController
 
 import json
 
@@ -23,7 +24,12 @@ def search(request):
             'mode': 'basic'
         }
         return render(request, 'UsedItem/search.html', context=context)
-    
+
+    if 'keyword' in request.session:
+        del request.session['keyword']
+    request.session['keyword'] = keyword
+
+
     bunjang = get_bunjang_products(keyword)
     # @TODO 당근, 중고나라 넣기
     # danggeun = get_dangn_products(keyword)
@@ -45,19 +51,6 @@ def search(request):
 
 
 
-# # csrf 검사 무시
-# @csrf_exempt
-# def kakaoMSG(request):
-#     if request.method == 'POST':
-#         print('kakaoMSG')
-
-#         ######################################################
-#         sendMsg()
-#         ######################################################
-
-#         return JsonResponse({'message':'success'})
-#     return JsonResponse({'error':'fail'})
-
 # csrf 검사 무시
 @csrf_exempt
 def excelSave(request):
@@ -73,7 +66,6 @@ def myTest(request):
     if 'products' in request.session:   # 기존 세션에 저장된 데이터 비우기
         del request.session['products']
     request.session['products'] = items
-    # request.session['products'] = json.dumps(items)
     saved_products = request.session.get('products')
     if saved_products:
         print("세션에 데이터가 저장되었습니다.")
@@ -110,19 +102,8 @@ def kakao_callback(request):
         'redirect_uri': redirect_uri,
         'code': code,
     }
-    
+    keyword = request.session.get('keyword', '')
     response = requests.post(token_url, data=data)
     token_json = response.json()
-    sendMsg(token_json)
-    # access_token = token_json.get('access_token')
-    
-    # # Use the access token to get user information
-    # user_info_url = 'https://kapi.kakao.com/v2/user/me'
-    # headers = {
-    #     'Authorization': f'Bearer {access_token}',
-    # }
-    
-    # user_info_response = requests.get(user_info_url, headers=headers)
-    # user_info = user_info_response.json()
-    print('야 왜 리턴안해')
+    sendMsg(token_json, keyword)
     return render(request, 'UsedItem/kakaoSuccess.html')
