@@ -206,15 +206,6 @@
         function shareKakao(){
             console.log('나에게 공유하기 !')
             window.open('https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=b6f734ae84ffdf355f8f4abb96aa88f0&redirect_uri=http://127.0.0.1:8000/oauth', '_blank')
-            // fetch('/kakaoMSG/', { method: 'POST'})
-            //     .then(res => {
-            //         console.log(res)
-            //         console.log('성공')
-            //     })
-            //     .catch(e => {
-            //         console.log(e)
-            //         console.log('실패')
-            //     })
         }
 
         function saveExcel(){
@@ -236,9 +227,6 @@
             // 서버에서 전달된 items 를 변수에 담기
             const items = JSON.parse('{{ items|escapejs }}')
             bunjang = JSON.parse('{{ bunjang|escapejs }}')
-            // @TODO parse 내용 바꾸기
-            // danggeun = JSON.parse('{{ bunjang|escapejs }}')
-            // joongna = JSON.parse('{{ bunjang|escapejs }}')
             danggeun = JSON.parse('{{ danggeun|escapejs }}')
             joongna = JSON.parse('{{ joongna|escapejs }}')
 

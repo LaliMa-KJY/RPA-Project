@@ -24,7 +24,6 @@ class DBController:
         self.conn.close()
     
     def saveItems(self, items):
-        print(items)
         curs = self.conn.cursor()
         # 기존 데이터 지우기
         sql = """

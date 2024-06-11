@@ -32,15 +32,12 @@ def search(request):
     dbController = DBController.DBController()
 
     bunjang = get_bunjang_products(keyword)
-    # @TODO 당근, 중고나라 넣기
     danggeun = get_dangn_products(keyword)
     joongna = get_joongna_products(keyword)
-    # items = {'bunjang': bunjang, 'danggeun':danggeun, 'joongna':joongna}
     items = bunjang + danggeun + joongna
-    # items = bunjang
+
     dbController.saveItems(items)
 
-    # @TODO 당근, 중고나라 넣기
     context = {
         'mode': 'search',
         'keyword': keyword,
