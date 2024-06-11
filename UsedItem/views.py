@@ -4,14 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from .crawling import get_all_products, get_joongna_products, get_dangn_products, get_bunjang_products
 from .kakaoMSG import sendMSG as sendMsg
 from . import DBController
-
 import json
 
 import requests
 from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.conf import settings
-
 
 
 def search(request):
@@ -29,14 +27,17 @@ def search(request):
         del request.session['keyword']
     request.session['keyword'] = keyword
 
+    # 검색 수행할 때마다 db 비워주기
+    dbController = DBController.DBController()
 
     bunjang = get_bunjang_products(keyword)
     # @TODO 당근, 중고나라 넣기
     # danggeun = get_dangn_products(keyword)
     # joongna = get_joongna_products(keyword)
     # items = {'bunjang': bunjang, 'danggeun':danggeun, 'joongna':joongna}
-    items = {'bunjang': bunjang}
-
+    # items = bunjang + danggeun + joongna
+    items = bunjang
+    dbController.saveItems(items)
 
     # @TODO 당근, 중고나라 넣기
     context = {

@@ -25,3 +25,15 @@ class DBController:
     
     def saveItems(self, items):
         print(items)
+        curs = self.conn.cursor()
+        sql = """
+                DELETE FROM ITEM
+              """
+        curs.execute(sql)
+
+        sql = """
+                INSERT INTO ITEM (flatform, title, url, location, price, img_url) VALUES (?, ?, ?, ?, ?, ?)
+              """
+        for i in items:
+            curs.execute(sql, (i['flatform'], i['title'], i['url'], i['location'], i['price'], i['img_url']))
+            self.conn.commit()
