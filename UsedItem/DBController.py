@@ -26,6 +26,7 @@ class DBController:
     def saveItems(self, items):
         print(items)
         curs = self.conn.cursor()
+        # 기존 데이터 지우기
         sql = """
                 DELETE FROM ITEM
               """
@@ -35,5 +36,29 @@ class DBController:
                 INSERT INTO ITEM (flatform, title, url, location, price, img_url) VALUES (?, ?, ?, ?, ?, ?)
               """
         for i in items:
-            curs.execute(sql, (i['flatform'], i['title'], i['url'], i['location'], i['price'], i['img_url']))
+            curs.execute(sql, (i['flatform'], i['title'], i['url'], i['location'], i['price'].replace(',','').replace('원',''), i['img_url']))
             self.conn.commit()
+    
+    def getAllItems(self):
+        print('getAllItems')
+        curs = self.conn.cursor()
+
+        sql = """
+                SELECT * FROM ITEM
+              """
+        curs.execute(sql)
+        rows = curs.fetchall()
+
+        items = []
+        for r in rows:
+            i = {
+                'flatform': r[1],
+                'title': r[2],
+                'url': r[3],
+                'location': r[4],
+                'price': r[5],
+                'img_url': r[6]
+            }
+            items.append(i)
+        curs.close()
+        return items

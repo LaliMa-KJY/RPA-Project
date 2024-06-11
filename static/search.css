@@ -144,6 +144,7 @@
 
 .detail .title {
     width: 200px;
+    height: 25px;
     font-size: 18px;
     font-weight: 700;
     text-overflow: ellipsis;
@@ -152,6 +153,7 @@
 }
 
 .detail .price {
+    height: 25px;
     font-weight: 1000;
     color: #E91E63;
     font-size: 18px;
@@ -159,6 +161,7 @@
 
 .detail .address {
     width: 200px;
+    height: 20px;
     font-size: 14px;
     text-overflow: ellipsis;
     white-space: nowrap;

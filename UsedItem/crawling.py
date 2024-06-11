@@ -48,7 +48,7 @@ def get_bunjang_products(itemname, max_results=10):
                 'title': title,
                 'url': link,
                 'location': location,
-                'price': price,
+                'price': price+'원',
                 'img_url': img_url
             })
         except Exception as e:
@@ -118,10 +118,10 @@ def get_joongna_products(search, max_results=10):
             title = item.select_one('.line-clamp-2.text-sm.md\\:text-base.text-heading')
             title_text = title.text if title else None
 
-            region = item.select_one('.font-semibold.space-s-2.mt-0\\.5.text-heading.lg\\:text-lg.lg\\:mt-1\\.5')
+            region = item.select_one('.text-sm.text-gray-400')
             region_text = region.text.strip() if region else None
 
-            price = item.select_one('.text-sm.text-gray-400')
+            price = item.select_one('.font-semibold.space-s-2.mt-0\\.5.text-heading.lg\\:text-lg.lg\\:mt-1\\.5')
             price_text = price.text.strip() if price else None
 
             img_tag = item.select_one('img')
